@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { api } from "../api";
+import { API_BASE_URL, api } from "../api";
 import { Field, FormActions, money, PageIntro } from "../components/UI";
 import { rules, useForm } from "../components/validation";
-
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "/backend").replace(/\/$/, "");
 
 const schema = {
   packName: [rules.required("Indique o nome da estadia."), rules.minLen(2), rules.maxLen(60)],

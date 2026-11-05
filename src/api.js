@@ -1,7 +1,10 @@
-const baseUrl = (import.meta.env.VITE_API_BASE_URL || '/backend').replace(/\/$/, '')
+export const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL
+  || (import.meta.env.DEV ? '/backend' : 'https://guest-house-api-zq7q.onrender.com')
+).replace(/\/$/, '')
 
 export function apiUrl(path) {
-  return `${baseUrl}${path}`
+  return `${API_BASE_URL}${path}`
 }
 
 const AUTH_STORAGE_KEY = 'mabjaia.auth-session'
@@ -155,7 +158,7 @@ export async function api(path, options = {}) {
 
   let response
   try {
-    response = await fetch(`${baseUrl}${path}`, { ...fetchOptions, headers })
+    response = await fetch(`${API_BASE_URL}${path}`, { ...fetchOptions, headers })
   } catch (error) {
     if (error instanceof TypeError) {
       throw new Error('Não foi possível ligar neste momento. Tente novamente.')

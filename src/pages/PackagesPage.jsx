@@ -5,10 +5,10 @@ import { EmptyState, Loading, money, PageIntro, Pagination } from "../components
 import stayRoom from "../assets/stay-room.jpg";
 import staySuite from "../assets/stay-suite.jpg";
 import stayRetreat from "../assets/stay-retreat.jpg";
+import { API_BASE_URL } from "../api";
 
 const PAGE_SIZE = 10;
 const stayImages = [stayRoom, staySuite, stayRetreat];
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "/backend").replace(/\/$/, "");
 const sections = [
   { id: "new", label: "Novas estadias", icon: Sparkles, description: "As opções adicionadas mais recentemente." },
   { id: "popular", label: "Mais solicitadas", icon: Flame, description: "As estadias mais escolhidas pelos clientes." },

@@ -1,10 +1,9 @@
 import { ArrowRight, DoorOpen, Sparkles } from "lucide-react";
 import stayRetreat from "../assets/stay-retreat.jpg";
 import GoogleSignIn from "../components/GoogleSignIn";
+import { API_BASE_URL } from "../api";
 
 // Moldura visual partilhada pelo ecrã de entrada e pelo de registo.
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "/backend").replace(/\/$/, "");
-
 export function AuthShell({ children }) {
   return (
     <main className="login-screen">

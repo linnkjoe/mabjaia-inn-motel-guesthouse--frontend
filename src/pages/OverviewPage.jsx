@@ -15,8 +15,7 @@ import {
   StatusBadge,
 } from "../components/UI";
 import stayRoom from "../assets/stay-room.jpg";
-
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "/backend").replace(/\/$/, "");
+import { API_BASE_URL } from "../api";
 
 function StatCard({ label, value, detail, icon: Icon, tint, trend }) {
   return (

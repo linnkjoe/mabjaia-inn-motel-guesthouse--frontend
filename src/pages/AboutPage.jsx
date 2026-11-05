@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { BadgePercent, Building2, Clock3, LogIn, MapPin, MessageCircle, Pencil, Phone, Save, Send, UserPlus, X } from "lucide-react";
-import { api } from "../api";
+import { API_BASE_URL, api } from "../api";
 import { Field, Loading, money, PageIntro } from "../components/UI";
 import { rules } from "../components/validation";
 import stayRetreat from "../assets/stay-retreat.jpg";
 import stayRoom from "../assets/stay-room.jpg";
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "/backend").replace(/\/$/, "");
 const defaults = {
   title: "Uma estadia acolhedora à sua espera",
   introduction: "Conforto, hospitalidade e tranquilidade no coração de Maluana.",
