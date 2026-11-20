@@ -56,7 +56,7 @@ Create a `.env` file in the root of the `frontend/` directory (or copy from the 
 VITE_API_BASE_URL=/backend
 ```
 
-> 📌 **Note:** The `VITE_API_BASE_URL` variable defines the base endpoint used by frontend services to execute REST API requests to the backend.
+> 📌 **Note:** The ignored `.env.local` selects the local Vite proxy (`/backend`); production builds use `.env.production` and the deployed API URL.
 
 ## 🚀 Getting Started
 
@@ -67,26 +67,33 @@ VITE_API_BASE_URL=/backend
 
 ### Installation and Execution Steps:
 
-1. **Navigate to the frontend directory:**
-   ```bash
-   cd frontend
+1. **Start the backend:** In `guesthouse-fullstack-app (2)/guesthouse-fullstack-app`, create a PostgreSQL database named `mabjaiainn` in pgAdmin and enter your local PostgreSQL password in the ignored backend `.env.local`. Then run:
+   ```powershell
+   .\mvnw.cmd spring-boot:run
    ```
 
-2. **Install dependencies:**
+2. **Navigate to the frontend project directory:**
+   ```bash
+   cd "frontend (2)/frontend/mabjaia-inn-motel(guesthouse)-frontend"
+   ```
+
+3. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Start the development server:**
+4. **Start the development server:**
    ```bash
    npm run dev
    ```
 
-4. **Build for production:**
+5. **Build for production:**
    ```bash
    npm run build
    ```
    *The optimized production files will be generated in the `dist/` directory.*
+
+Open `http://localhost:5173`. Vite forwards `/backend` API requests to the local backend on port `8080`. `.env.local` files are ignored by Git; production settings remain in `.env.production` and the Render dashboard.
 
 ## 📁 Directory Structure
 

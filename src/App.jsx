@@ -303,6 +303,7 @@ function App() {
       name: result.name || roleNames[role],
       clientId: result.clientId,
       mustChangePassword: Boolean(result.mustChangePassword),
+      googleAuthenticated: Boolean(result.googleAuthenticated),
     }
     persistAuthSession(result.token, restoredSession, result.expiresIn)
     setSession(restoredSession)
@@ -346,13 +347,15 @@ function App() {
     sessionStorage.removeItem(PENDING_GOOGLE_BOOKING_KEY)
   }
 
-  function handleForcedPasswordChanged(result) {
-    const updatedSession = { ...session, mustChangePassword: false }
+  function handlePasswordChanged(result) {
+    const updatedSession = { ...session, mustChangePassword: false, googleAuthenticated: false }
     persistAuthSession(result.token, updatedSession, result.expiresIn)
     setSession(updatedSession)
-    setActivePage('overview')
-    setPageError('')
-    showNotice('Palavra-passe definida. Já pode utilizar a aplicação.')
+    if (session.mustChangePassword) {
+      setActivePage('overview')
+      setPageError('')
+      showNotice('Palavra-passe definida. Já pode utilizar a aplicação.')
+    }
   }
 
   function showNotice(message) {
@@ -551,7 +554,7 @@ function App() {
     'room-create': <RoomFormPage {...pageProps} />,
     'room-edit': <RoomFormPage {...pageProps} room={selected} />,
     'booking-extend': <ExtendBookingPage {...pageProps} booking={selected} />,
-    password: <PasswordPage onNotice={showNotice} />,
+    password: <PasswordPage session={session} onNotice={showNotice} onPasswordChanged={handlePasswordChanged} />,
   }
   const defaultPage = session.role === 'Cliente' ? 'bookings' : 'overview'
   const visiblePageId = pagesByRole[session.role]?.has(activePage) ? activePage : defaultPage
@@ -563,7 +566,7 @@ function App() {
         <div className="d-flex justify-content-end">
           <button type="button" className="btn btn-light-outline" onClick={logout}>Terminar sessão</button>
         </div>
-        <PasswordPage forced onPasswordChanged={handleForcedPasswordChanged} />
+        <PasswordPage session={session} forced onPasswordChanged={handlePasswordChanged} />
       </main>
     )
   }

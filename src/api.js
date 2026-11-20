@@ -40,7 +40,10 @@ export function restoreAuthSession() {
     }
 
     authToken = saved.token
-    return saved.session
+    return {
+      ...saved.session,
+      googleAuthenticated: saved.session.googleAuthenticated ?? false,
+    }
   } catch {
     clearAuthToken()
     return null
@@ -93,6 +96,8 @@ function friendlyMessage(message) {
     'package image must not exceed 5 mb': 'A imagem não pode exceder 5 MB.',
     'package image must be a jpeg or png file': 'Escolha uma imagem JPG ou PNG.',
     'invalid package image': 'O ficheiro escolhido não é uma imagem JPG ou PNG válida.',
+    'image dimensions exceed supported limits': 'A imagem excede as dimensões máximas suportadas. Reduza a resolução e tente novamente.',
+    'could not optimize package image': 'Não foi possível otimizar a imagem. Tente outra imagem JPG ou PNG.',
     'could not read package image': 'Não foi possível ler a imagem selecionada.',
     'contact message not found': 'Esta mensagem já não está disponível.',
     'client account required': 'Entre com uma conta de cliente para enviar mensagens.',
@@ -112,7 +117,12 @@ function friendlyMessage(message) {
 }
 
 export function register(data) {
-  return api('/auth/register', { method: 'POST', body: JSON.stringify(data), skipAuth: true })
+  return api('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    skipAuth: true,
+    signal: AbortSignal.timeout(90000),
+  })
 }
 
 export function verifyRegistration(email, code) {
@@ -160,6 +170,9 @@ export async function api(path, options = {}) {
   try {
     response = await fetch(`${API_BASE_URL}${path}`, { ...fetchOptions, headers })
   } catch (error) {
+    if (error?.name === 'TimeoutError' || error?.name === 'AbortError') {
+      throw new Error('O envio do código demorou demasiado. Verifique a configuração de e-mail do servidor e tente novamente.')
+    }
     if (error instanceof TypeError) {
       throw new Error('Não foi possível ligar neste momento. Tente novamente.')
     }
